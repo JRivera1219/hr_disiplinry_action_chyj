@@ -1,0 +1,727 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Stage -->
+        <record id="hr_expedient_stage_act" model="ir.actions.act_window">
+            <field name="name">Expedient / Stages</field>
+            <field name="res_model">hr.expedient.stage</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Add a new stage in the expedient process
+                </p>
+                <p>
+                    Define here your stages of the expedient process, for example:
+                    qualification call, first interview, second interview, refused,
+                    hired.
+                </p>
+            </field>
+        </record>
+        <!-- Expedient -->
+        <record model="ir.ui.view" id="crm_case_tree_view_job">
+            <field name="name">Expedient</field>
+            <field name="model">hr.expedient</field>
+            <field name="arch" type="xml">
+                <tree string="Expedient" decoration-bf="message_needaction==True">
+                    <field name="message_needaction" invisible="1"/>
+                    <field name="last_stage_id" invisible="1"/>
+                    <field name="date_last_stage_update" invisible="1"/>
+                    <field name="name"/>
+                    <field name="type_expedient_id"/>
+                    <field name="stage_id"/>
+                    <field name="source_id"/>
+                    <field name="accion"/>
+                    <field name="Hechos"/>
+                    <field name="employee_id" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="hr_expedient_view_tree_activity" model="ir.ui.view">
+            <field name="name">hr.expedient.view.tree.activity</field>
+            <field name="model">hr.expedient</field>
+            <field name="arch" type="xml">
+                <tree string="Next Activities" decoration-danger="activity_date_deadline &lt; current_date"
+                      default_order="activity_date_deadline">
+                    <field name="name"/>
+                    <field name="activity_date_deadline"/>
+                    <field name="activity_type_id"/>
+                    <field name="activity_summary"/>
+                    <field name="stage_id"/>
+                    <field name="activity_exception_decoration" widget="activity_exception"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="hr_expedient_view_form">
+            <field name="name">hr - Expedient Form</field>
+            <field name="model">hr.expedient</field>
+            <field name="arch" type="xml">
+                <form string="hr - Expedient Form" class="o_form_project_tasks">
+                  <header>
+                     <field name="stage_id" widget="statusbar" options="{'clickable': '1', 'fold_field': 'fold'}"
+                               attrs="{'invisible': [('active', '=', False)]}"/>
+                </header>
+                    <sheet>
+
+                        <widget name="web_ribbon" title="Archived" bg_color="bg-danger"
+                                attrs="{'invisible': [('active', '=', True)]}"/>
+                        <div class="oe_title pr-o">
+                            <h1 class="d-flex flex-row justify-content-between">
+                                 <P>Folio:</P>
+                                <field name="name" class="o_task_name text-truncate" placeholder="Folio Expediente"/>
+                                <!--field name="sequence" class="o_task  text-truncate" placeholder="Folio Expediente.."/-->
+                                <field name="sequence_type" invisible="1"></field>
+                                <field name="type_expedient_id" class="mr-3" invisible="True"/>
+                                <field name="name1"/>
+                                <field name="kanban_state" widget="kanban_state_selection" class="ml-auto"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="active" invisible="1"/>
+                                <field name="legend_normal" invisible="1"/>
+                                <field name="legend_blocked" invisible="1"/>
+                                <field name="legend_done" invisible="1"/>
+                                <!--El chistesito del Datelle-->
+                                <!--field name="stage_id" invisible="1"/-->
+                            </group>
+                        </group>
+                        <group col="4" string="Información Interna">
+                            <!--field name="partner_id"/-->
+                            <field name="date_open"/>
+                            <field name="source_id"/>
+                            <field name="genero"/>
+                            <field name="inv"/>
+                            <field name="file_origin"/>
+                            <field name="signing_person"/>
+                            <field name="sender_dependency"/>
+                            <!--agregado-->
+                            <field name="date"/>
+                            <field name="date1"/>
+                            <field name="adqui"/>
+                            <field name="adqui1"/>
+                            <field name="conducta"/>
+                            <field name="accion"/>
+                            <field name="Hechos"/>
+                            <field name="Sancion"/>
+                            <field name="motdcierre"/>
+                            <field name="Finalizacion"/>
+
+                        </group>
+                        <group col="4" string="">
+                            <field name="source_document_number" invisible="1"/>
+                            <field name="origin_date" invisible="1"/>
+                            <field name="origin_complaint" invisible="1"/>
+                            <field name="actions" invisible="1"/>
+                        </group>
+                        <notebook>
+
+
+                            <!-- para  agregar personal involucrado-->
+                            <page name="employee_id3" string="Personal Involucrado">
+                                <img src="/hr_disiplinry_action_chyj/static/description/1.jpg"/>
+                                <group>
+                                    <field name="employee_id3">
+                                        <tree>
+                                            <!--field name="id_name" invisible="True"></field-->
+                                            <field name="involocrados"></field>
+                                            <field name="n_empleado"></field>
+                                            <field name="employee_id" invisible="1"></field>
+                                            <!--field name="id_n"/-->
+                                            <field name="work_phone11" invisible="1"></field>
+                                            <field name="mobile_phone11" invisible="1"></field>
+                                            <!--field name="company11"></field-->
+                                            <field name="department_id" invisible="1"></field>
+                                            <field name="job_id" invisible="1"></field>
+
+                                        </tree>
+                                    </field>
+                                </group>
+                            </page>
+                            <page name="complainer" string="Parte Quejosa">
+                                <img src="/hr_disiplinry_action_chyj/static/description/2.jpg"/>
+                                <group>
+                                    <field name="complainer">
+                                        <tree>
+                                            <field name="Name"></field>
+                                            <field name="Domicilio"></field>
+
+                                            <field name="zip_address" invisible="1"></field>
+                                            <field name="district_address" invisible="1"></field>
+                                            <field name="city_address" invisible="1"></field>
+                                            <field name="state_address" invisible="1"></field>
+                                            <field name="country_address" invisible="1"></field>
+                                        </tree>
+                                    </field>
+                                </group>
+                            </page>
+
+                            <page name="id_antecedente" string="Antecedente">
+                                <img src="/hr_disiplinry_action_chyj/static/description/3.png"/>
+                                <tree>
+                                    <field name="id_antecedente"/>
+                                </tree>
+                            </page>
+                        </notebook>
+                        <separator string="Application Summary"/>
+                        <field name="description" placeholder="Feedback of actions..."/>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"
+                               options="{'post_refresh': 'recipients', 'open_attachments': True}"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+        <!--record id="view_id" model="ir.ui.view">
+        <field name="name">Search</field>
+         <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_filter"/>
+         <field name="arch" type="xml">
+             <xpath expr="//field[@name='name']" position="after">
+                     <field name="employee_number" string="Numero de Empleado"/>
+                     <field name="fullname" string="Nombre_Completo del Empleado"/>
+             </xpath>
+         </field>
+     </record-->
+
+        <record model="ir.ui.view" id="hr_base">
+            <field name="name">hr.base</field>
+            <field name="model">hr.base</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <group>
+                               <P>Si Desconoce El Numero de Empleado Favor de Capturar</P>
+                                <field name="clv" string="No Conoce El Numero de Empleado?"/>
+                                <field name="involocrados" string="INVOLUCRADOS"
+                                       attrs="{'invisible':[('clv','!=',True)]}"/>
+                                <field name="n_empleado" string="N-EMPLEADO"
+                                       attrs="{'invisible':[('clv','!=',True)]}"/>
+                                <field name="id_name" invisible="True"/>
+                                <field name="employee_id"/>
+                                <!--field name="id_n"/-->
+                                <field name="work_phone11"/>
+                                <field name="mobile_phone11"/>
+                                <!--field name="company11"/-->
+                                <field name="department_id"/>
+                                <field name="job_id"/>
+                            </group>
+                        </group>
+                          <notebook>
+                            <page string="observaciones">
+                                <field name="observaciones2"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <!-- goooll-->
+        <record model="ir.ui.view" id="hr_disiplinary_injured">
+            <field name="name">hr.disiplinary.injured</field>
+            <field name="model">hr.disiplinary.injured</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <group>
+                                 <P>Si Desconoce El Domicilio  Favor de Capturar</P>
+                                <field name="clv1" string="No Conoce El Domicilio?"/>
+                                <field name="Name" string="NOMBRE COMPLETO" attrs="{'invisible':[('clv1','!=',True)]}"/>
+                                <field name="id_expediente_injured" invisible="1"/>
+                                <field name="name"/>
+                                <field name="Domicilio" string="DOMICILIO" attrs="{'invisible':[('clv1','!=',True)]}"/>
+                                <field name="address"/>
+                                <field name="zip_address"/>
+                                <field name="district_address"/>
+                                <field name="city_address"/>
+                            </group>
+                            <group>
+                                <field name="state_address"/>
+                                <field name="country_address"/>
+                                <field name="street"/>
+                                <field name="street2"/>
+                                <field name="number_interior"/>
+                                <field name="number_exterior"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="observaciones">
+                                <field name="observaciones"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <!--prueba -->
+        <record model="ir.ui.view" id="hr_disiplinary_precedent">
+            <field name="name">hr.disiplinary.precedent</field>
+            <field name="model">hr.disiplinary.precedent</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <group>
+                                 <P>Si Desconoce El Lugar Del Evento Favor de Capturar</P>
+                                <field name="clv2" string="No Conoce El Lugar Del Evento?"/>
+                                <field name="event_venue" string="LUGAR DEL EVENTO" attrs="{'invisible':[('clv2','!=',True)]}"/>
+                                <field name="municipio_event" string="MUNICIPIO DEL EVENTO"  attrs="{'invisible':[('clv2','!=',True)]}"/>
+                                <field name="Date_Time" string="FECHA DEL EVENTO" attrs="{'invisible':[('clv2','!=',True)]}"/>
+                                <field name="addres"/>
+                                <field name="zip_address"/>
+                                <field name="district_address"/>
+                                <field name="city_address"/>
+                            </group>
+                            <group>
+                                <field name="state_address"/>
+                                <field name="country_address"/>
+                                <field name="street"/>
+                                <field name="street2"/>
+                                <field name="number_interior"/>
+                                <field name="number_exterior"/>
+                                <field name="id_expediente_precedent" invisible="1"/>
+                                <field name="name"/>
+                            </group>
+                        </group>
+                         <notebook>
+                            <page string="observaciones">
+                                <field name="observaciones1"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="crm_case_pivot_view_expedient">
+            <field name="name">hr - expedient</field>
+            <field name="model">hr.expedient</field>
+            <field name="arch" type="xml">
+                <pivot string="Job Applications">
+                    <field name="create_date" type="row"/>
+                    <field name="stage_id" type="col"/>
+                </pivot>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="crm_case_graph_view_expedient">
+            <field name="name">hr - Expedient Graph</field>
+            <field name="model">hr.expedient</field>
+            <field name="arch" type="xml">
+                <graph string="Cases By Stage and Estimates" type="bar" orientation="vertical" stacked="True">
+                    <field name="stage_id" type="col"/>
+                </graph>
+            </field>
+        </record>
+
+        <record id="hr_expedient_view_search_bis" model="ir.ui.view">
+            <field name="name">hr.expedient.view.search</field>
+            <field name="model">hr.expedient</field>
+            <field name="arch" type="xml" >
+                <search string="Search Expedeint">
+                    <field string="Expedients" name="employee_name"
+                           filter_domain="['|', '|', ('name', 'ilike', self), ('employee_name', 'ilike', self), ('file_origin', 'ilike', self)]"/>
+                    <field string="File Origin" name="file_origin" filter_domain="[('file_origin','ilike', self)]"/>
+                    <field name="type_expedient_id"/>
+                    <field name="stage_id" domain="[]"/>
+                    <field name="signing_person"/>
+                    <field name="sender_dependency"/>
+                    <field name="origin_complaint"/>
+                    <group expand="0" string="Group By">
+                        <!--                        <filter string="Expedient" name="type_expedient_id" domain="[]" context="{'group_by': 'type_expedient_id'}" />-->
+                    </group>
+                </search>
+            </field>
+
+        </record>
+
+        <record id="quick_create_expedient_form" model="ir.ui.view">
+            <field name="name">hr.expedient.form.quick_create</field>
+            <field name="model">hr.expedient</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <field name="name"/>
+                        <field name="employee_id"/>
+                        <field name="type_expedient_id"/>
+                        <field name="date_open"/>
+                        <field name="source_id" invisible="1"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="hr_kanban_view_expedient">
+            <field name="name">Hr Expedient kanban</field>
+            <field name="model">hr.expedient</field>
+            <field name="arch" type="xml">
+                <kanban default_group_by="stage_id" class="o_kanban_small_column o_kanban_project_tasks"
+                        quick_create_view="hr_disiplinry_action_chyj.quick_create_expedient_form">
+                    <field name="stage_id" options='{"group_by_tooltip": {"requirements": "Requirements"}}' />
+                    <field name="color"/>
+                    <field name="name"/>
+                    <field name="date_open"/>
+                    <field name="type_expedient_id"/>
+                    <field name="source_id"/>
+                    <field name="file_origin"/>
+                    <field name="signing_person"/>
+                    <field name="sender_dependency"/>
+                    <field name="source_document_number"/>
+                    <field name="origin_date"/>
+                    <field name="origin_complaint"/>
+                    <field name="active"/>
+                    <field name="activity_ids"/>
+                    <field name="activity_state"/>
+                    <field name="employee_name"/>
+                    <progressbar field="activity_state"
+                                 colors='{"planned": "success", "overdue": "danger", "today": "warning"}'/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="{{!selection_mode ? 'oe_kanban_color_' + kanban_getcolor(record.color.raw_value) : ''}} oe_kanban_card oe_kanban_global_click oe_applicant_kanban oe_semantic_html_override">
+                                <div class="o_dropdown_kanban dropdown">
+                                    <a class="dropdown-toggle o-no-caret btn" role="button" data-toggle="dropdown"
+                                       href="#" aria-label="Dropdown menu" title="Dropdown menu">
+                                        <span class="fa fa-ellipsis-v"/>
+                                    </a>
+                                    <div class="dropdown-menu" role="menu">
+                                        <t t-if="widget.deletable">
+                                            <a role="menuitem" type="delete" class="dropdown-item">Delete</a>
+                                        </t>
+                                        <a role="menuitem" name="action_makeMeeting" type="object"
+                                           class="dropdown-item">Schedule Interview
+                                        </a>
+                                        <div role="separator" class="dropdown-divider"></div>
+                                        <ul class="oe_kanban_colorpicker" data-field="color"/>
+                                    </div>
+                                </div>
+                                <!--dentro del exp-->
+                                <div class="oe_kanban_content">
+                                    <div class="o_kanban_record_top">
+                                        <div class="o_kanban_record_headings">
+                                            <b class="o_kanban_record_title mt8" t-if="record.employee_name.raw_value">
+                                                <field name="employee_name"/>
+                                                <br/>
+                                            </b>
+                                            <t t-else="1">
+                                                <i class="o_kanban_record_title">
+                                                    <field name="name"/>
+                                                </i>
+                                                <br/>
+                                            </t>
+                                            <div class="o_kanban_record_subtitle"
+                                                 invisible="context.get('search_default_expedient_id', False)">
+                                                <field name="type_expedient_id"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <field name="employee_id" widget="many2many_tags"
+                                           options="{'color_field': 'color'}"/>
+                                    <div class="o_kanban_record_bottom mt4">
+                                        <div class="oe_kanban_bottom_left">
+                                            <div class="float-left mr4" groups="base.group_user">
+                                            </div>
+                                            <div class="o_kanban_inline_block mr8">
+                                                <field name="activity_ids" widget="kanban_activity"/>
+                                            </div>
+                                        </div>
+                                        <div class="oe_kanban_bottom_right">
+                                            <a name="action_get_attachment_tree_view" type="object">
+                                                <span title='Documents'>
+                                                    <i class='fa fa-paperclip' role="img" aria-label="Documents"/>
+                                                </span>
+
+                                            </a>
+                                            <div class="o_kanban_state_with_padding">
+                                                <field name="kanban_state" widget="kanban_state_selection"/>
+                                                <field name="legend_normal" invisible="1"/>
+                                                <field name="legend_blocked" invisible="1"/>
+                                                <field name="legend_done" invisible="1"/>
+                                            </div>
+                                            <!---hola-->
+                                            <!--field name="partner_id">Responsable</field-->
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="oe_clear"></div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <record id="hr_applicant_view_activity" model="ir.ui.view">
+            <field name="name">hr.applicant.activity</field>
+            <field name="model">hr.expedient</field>
+            <field name="arch" type="xml">
+                <activity string="Applicants">
+                    <templates>
+                        <div t-name="activity-box">
+                            <div>
+                                <field name="name" display="full"/>
+                                <field name="employee_name" muted="1" display="full"/>
+                            </div>
+                        </div>
+                    </templates>
+                </activity>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_hr_expedient">
+            <field name="name">Expedient</field>
+            <field name="res_model">hr.expedient</field>
+            <field name="view_mode">kanban,tree,form,graph,pivot</field>
+            <field name="search_view_id" ref="hr_expedient_view_search_bis"/>
+            <field name="context">{'search_default_type_expedient_id': [active_id], 'default_type_expedient_id':
+                active_id}
+            </field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_empty_folder">
+                    <!--No applications yet-->
+                    CREAR UNA NUEVA TAREA🤗🖥☆*: .｡. o(≧▽≦)o .｡.:*☆☆*: .｡. o(≧▽≦)o .｡.:*☆
+                </p>
+                <!--p>
+                    CREAR UNA NUEVA TAREA🤗🖥
+                </p-->
+                <!--p>
+                    Applicants and their attached CV are created automatically when an email is sent.
+                    If you install the document management modules, all resumes are indexed automatically,
+                    so that you can easily search through their content.
+                </p-->
+            </field>
+        </record>
+        <record model="ir.actions.act_window.view" id="action_hr_sec_kanban_view_act_job">
+            <field name="sequence" eval="0"/>
+            <field name="view_mode">kanban</field>
+            <field name="view_id" ref="hr_kanban_view_expedient"/>
+            <field name="act_window_id" ref="action_hr_expedient"/>
+        </record>
+
+
+        <!-- Jobs -->
+        <record id="type_expedient_simple_form" model="ir.ui.view">
+            <field name="name">type.expedient.simple.form</field>
+            <field name="model">type.expedint</field>
+            <!--            <field name="priority">200</field>-->
+            <field name="arch" type="xml">
+                <form string="Create a type Expedient">
+                    <sheet>
+                        <group>
+                            <field name="name" class="oe_inline" placeholder="e.g. administrative act"/>
+                            <!--field name="sequence3"></field-->
+                            <!--field name="sequence_typ"></field-->
+                            <!--field name="res"></field-->
+                            <!--field name="sequence2"></field-->
+
+
+                            <!--<label for="alias_name" string="Application email" attrs="{'invisible': [('alias_domain', '=', False)]}" help="Define a specific contact address for this job position. If you keep it empty, the default email address will be used which is in human resources settings"/>-->
+                            <!--                        <div name="alias_def" attrs="{'invisible': [('alias_domain', '=', False)]}">-->
+                            <!--                            <field name="alias_id" class="oe_read_only" string="Email Alias" required="0"/>-->
+                            <!--                            <div class="oe_edit_only" name="edit_alias">-->
+                            <!--                                <field name="alias_name" class="oe_inline"/>@<field name="alias_domain" class="oe_inline" readonly="1"/>-->
+                            <!--                            </div>-->
+                            <!--                            <div class="text-muted" attrs="{'invisible': [('alias_domain', '=', False)]}">Applicants can send resume to this email address,<br/>it will create an application automatically</div>-->
+                            <!--                        </div>-->
+                        </group>
+                        <footer>
+                            <button string="Create" name="close_dialog" type="object" class="btn-primary"/>
+                            <button string="Discard" class="btn-secondary" special="cancel"/>
+                        </footer>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="create_expedient_simple" model="ir.actions.act_window">
+            <field name="name">Create a type Expedient</field>
+            <field name="res_model">type.expedint</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="type_expedient_simple_form"/>
+            <field name="target">new</field>
+        </record>
+
+
+        <menuitem
+                name="Expedient"
+                id="menu_hr_expedient_root"
+                web_icon="hr_disiplinry_action_chyj,static/description/icon.png"
+                sequence="1"/>
+    </data>
+
+    <menuitem id="menu_hr_expedient_configuration" name="Configuration" parent="menu_hr_expedient_root"
+              sequence="100"/>
+
+
+    <menuitem
+            name="Expedientes"
+            parent="menu_hr_expedient_root"
+            id="menu_crm_case_expedeint" sequence="2"/>
+
+    <!--All Expedeint-->
+    <!-- se comenta por detalles de un error 17-10-2022-->
+    <!--menuitem
+            name="All Expedient"
+            parent="menu_crm_case_expedeint"
+            id="menu_crm_case_categ_all_app" action="action_hr_expedient" sequence="2"/-->
+
+    <!-- Stage Tree View -->
+    <record model="ir.ui.view" id="hr_expedinet_stage_tree">
+        <field name="name">hr.expedient.stage.tree</field>
+        <field name="model">hr.expedient.stage</field>
+        <field name="arch" type="xml">
+            <tree string="Stages">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="fold"/>
+            </tree>
+        </field>
+    </record>
+
+
+    <!-- Stage Kanban View -->
+    <record id="view_hr_recruitment_stage_kanban" model="ir.ui.view">
+        <field name="name">hr.expedient.stage.kanban</field>
+        <field name="model">hr.expedient.stage</field>
+        <field name="arch" type="xml">
+            <kanban>
+                <field name="name"/>
+                <field name="fold"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_global_click">
+                            <div>
+                                <strong>
+                                    <field name="name"/>
+                                </strong>
+                            </div>
+                            <div>
+                                <span>Folded in Expedient Pipe:</span>
+                                <field name="fold" widget="boolean"/>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Stage Form View -->
+    <record model="ir.ui.view" id="hr_recruitment_stage_form">
+        <field name="name">hr.expedient.stage.form</field>
+        <field name="model">hr.expedient.stage</field>
+        <field name="arch" type="xml">
+            <form string="Stage">
+                <sheet>
+                    <group name="stage_definition" string="Stage Definition">
+                        <group>
+                            <field name="name"/>
+                            <field name="sequence" groups="base.group_no_one"/>
+                        </group>
+                        <group name="stage_details">
+                            <field name="fold"/>
+                            <!--field name="type_expedient_ids" widget="many2many_tags"/-->
+                            <field name="expedient_ids" widget="many2many_tags"/>
+                        </group>
+                    </group>
+                    <group name="tooltips" string="Tooltips">
+                        <p class="text-muted" colspan="2">
+                            You can define here the labels that will be displayed for the kanban state instead
+                            of the default labels.
+                        </p>
+                        <label for="legend_normal" string=" " class="o_status"/>
+                        <field name="legend_normal" nolabel="1"/>
+                        <label for="legend_blocked" string=" " class="o_status o_status_red"/>
+                        <field name="legend_blocked" nolabel="1"/>
+                        <label for="legend_done" string=" " class="o_status o_status_green"/>
+                        <field name="legend_done" nolabel="1"/>
+                    </group>
+                    <separator string="Requirements"/>
+                    <field name="requirements"/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Stage Action -->
+    <record id="hr_expedient_stage_act" model="ir.actions.act_window">
+        <field name="name">Stages</field>
+        <field name="res_model">hr.expedient.stage</field>
+        <field name="view_mode">tree,kanban,form</field>
+        <field name="view_id" ref="hr_expedinet_stage_tree"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Add a new stage in the expedient process
+            </p>
+            <p>
+                Don't forget to specify the if your expedient process is different according to the type Expedient.
+            </p>
+        </field>
+    </record>
+
+    <menuitem
+            id="menu_hr_expedient_stage"
+            name="Etapas"
+            parent="menu_hr_expedient_configuration"
+            action="hr_expedient_stage_act"
+            sequence="1"/>
+
+    <!--Type Expedient-->
+    <record id="type_expedint_view" model="ir.ui.view">
+        <field name="name">type.expedint</field>
+        <field name="model">type.expedint</field>
+        <field name="arch" type="xml">
+            <form string="Type Expedient">
+                <sheet>
+                    <div class="oe_title">
+                        <group colspan="4" col="2">
+                            <field name="name" placeholder="Type Expedient Disiplinary"/>
+                            <field name="description" placeholder="Description"/>
+                            <field name='image' widget="image" class="oe_avatar"/>
+                            <field name="active" placeholder="Is active"/>
+                            <field name="state" placeholder="State"/>
+                        </group>
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="type_expedint_tree_view" model="ir.ui.view">
+        <field name="name">type.expedint.tree.view</field>
+        <field name="model">type.expedint</field>
+        <field name="arch" type="xml">
+            <tree string="Type Expedient Disiplinary">
+                <!--decoration-muted="active=='borrowed'" decoration-info="active=='available'">-->
+                <field name="name"/>
+                <field name="description"/>
+                <field name="active"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="type_exp_act_window" model="ir.actions.act_window">
+        <field name="name">Type Disiplinary expedient</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">type.expedint</field>
+        <!--<field name="view_type">form</field>-->
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                There is no type expedient added yet. Click here to add a new type expedient.
+            </p>
+        </field>
+    </record>
+    <menuitem
+            id="menu_type_expedient"
+            name="Type Expedient Disciplinary"
+            parent="menu_hr_expedient_configuration"
+            action="type_exp_act_window"
+            sequence="2"/>
+</odoo>

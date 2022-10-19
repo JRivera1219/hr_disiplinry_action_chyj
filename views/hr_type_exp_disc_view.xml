@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+        <record model="ir.actions.act_window" id="action_type_new_expedient">
+            <field name="name">New Expedient</field>
+            <field name="res_model">hr.expedient</field>
+            <field name="view_mode">form</field>
+            <field name="context">{'search_default_type_expedient_id': [active_id], 'default_type_expedient_id':
+                active_id}
+            </field>
+        </record>
+
+        <record id="view_hr_type_expedient_kanban" model="ir.ui.view">
+            <field name="name">type.expedient.kanban</field>
+            <field name="model">type.expedint</field>
+            <field name="arch" type="xml">
+                <kanban class="oe_background_grey o_kanban_dashboard o_project_kanban o_emphasize_colors"
+                        on_create="hr_disiplinry_action_chyj.create_expedient_simple" create="0">
+                    <field name="name"/>
+                    <field name="description"/>
+                    <field name="active"/>
+                    <field name="image"/>
+                    <field name="color"/>
+                    <field name="state"/>
+                    <field name="expedient_count"/>
+                    <templates>
+                        <!-- panel Principal-->
+                        <t t-name="kanban-box">
+                            <div t-attf-class="#{!selection_mode ? kanban_color(record.color.raw_value) : ''}">
+                                <div class="o_project_kanban_main">
+                                    <div class="o_kanban_card_content">
+                                        <div class="o_kanban_primary_left">
+                                            <div class="o_primary">
+                                                <span>
+                                                    <t t-esc="record.name.value"/>
+
+                                                </span>
+
+                                                <span t-if="record.description.value">
+                                                    <strong>
+                                                        <t t-esc="record.description.value"/>
+                                                    </strong>
+                                                </span>
+                                            </div>
+                                            <div class="container o_kanban_card_content">
+                                                <t t-if="record.state.raw_value == 'progress'">
+                                                    <div class="row">
+                                                        <div class="col-6">
+                                                            <button class="btn btn-primary"
+                                                                    name="%(hr_disiplinry_action_chyj.action_hr_expedient)d"
+                                                                    type="action">
+                                                                <field name="expedient_count"/>
+                                                                Expedients
+                                                                <span>📁📓📝</span>
+
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </t>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="o_kanban_card_manage_pane dropdown-menu"
+                                         groups="project.group_project_manager" role="menu">
+                                        <div class="o_kanban_card_manage_section o_kanban_manage_reports">
+                                            <div role="menuitem">
+                                            </div>
+                                            <div role="menuitem">
+                                                <a type="edit">Edit</a>
+                                            </div>
+                                        </div>
+                                        <div role="menuitem" aria-haspopup="true"
+                                             class="o_no_padding_kanban_colorpicker">
+                                            <ul class="oe_kanban_colorpicker" data-field="color" role="popup"/>
+                                        </div>
+                                    </div>
+                                    <a class="o_kanban_manage_toggle_button o_left" href="#"
+                                       groups="project.group_project_manager">
+                                        <i class="fa fa-ellipsis-v" role="img" aria-label="Manage" title="Manage"/>
+                                    </a>
+                                    <span class="o_right">
+                                    </span>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <!-- Type Expedeint -->
+        <record id="view_hr_expedient_tree" model="ir.ui.view">
+            <field name="name">type.expedient.tree</field>
+            <field name="model">type.expedint</field>
+            <field name="arch" type="xml">
+                <tree string="Type Expedient" create="1">
+                    <field name="name"/>
+                    <field name="description"/>
+                    <field name="active"/>
+                    <field name="image"/>
+                    <field name="state"/>
+                    <field name="color"/>
+                    <field name="expedient_count"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- type related expedient menu action -->
+        <record model="ir.actions.act_window" id="action_type_expedient">
+            <field name="name">Expedientes 📚</field>
+            <field name="res_model">type.expedint</field>
+            <field name="view_mode">kanban,form,tree</field>
+            <field name="view_id" ref="view_hr_type_expedient_kanban"/>
+            <field name="context">{}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Ready to manage files more efficiently?
+                </p>
+                <p>
+                    Let's create a new File Type.
+                </p>
+            </field>
+        </record>
+        <menuitem name="Tipo de Expediente" parent="menu_crm_case_expedeint" id="menu_type_expedinet"
+                  action="action_type_expedient" sequence="1"/>
+
+        <menuitem parent="menu_hr_expedient_configuration" id="menu_hr_type_expedient_config"
+                  action="action_type_expedient"
+                  sequence="10"/>
+    </data>
+</odoo>

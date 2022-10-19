@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+<!--        <record id="expedient_disciplinary_act_window" model="ir.actions.act_window">-->
+<!--            <field name="name">Expedient_Disciplinary</field>-->
+<!--            <field name="type">ir.actions.act_window</field>-->
+<!--            <field name="res_model">hr.expedient.disiplinary</field>-->
+<!--            &lt;!&ndash;<field name="view_type">form</field>&ndash;&gt;-->
+<!--            <field name="view_mode">kanban,tree,form</field>-->
+<!--            <field name="help" type="html">-->
+<!--                <p class="oe_view_nocontent_create">-->
+<!--                    There is no examples click here to add new Expedient.-->
+<!--                </p>-->
+<!--            </field>-->
+<!--        </record>-->
+<!--        <menuitem-->
+<!--                id="expedient_root"-->
+<!--                name="Expedientes"-->
+<!--                sequence="0"-->
+<!--                web_icon="hr_disiplinary_action_chyj,static/description/icon.png"-->
+<!--        />-->
+<!--        <menuitem-->
+<!--                name="hr_expedient_disciplinay"-->
+<!--                id="expedient_disiplinary"-->
+<!--                parent="expedient_root"-->
+<!--                sequence="1"-->
+<!--                action="expedient_disciplinary_act_window"-->
+<!--        />-->
+<!--        <menuitem-->
+<!--                id="menu_expedient_config"-->
+<!--                name="Configuration"-->
+<!--                sequence="2"-->
+<!--                parent="expedient_root"-->
+<!--        />-->
+    </data>
+</odoo>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem
+            id="chyj_root_menu"
+            name="Disiplinary Action"
+            sequence="10"
+            web_icon="hr_disiplinary_action_chyj, static/description/icon.png"
+    />
+    <menuitem
+            id="expedient_root_administration"
+            name="Expedientes"
+            parent="chyj_root_menu"
+            sequence="1"
+    />
+
+</odoo>
+
+        <!-- id="medical_root"-->
+        <!--        name="Medical"-->
+        <!--        sequence="10"-->
+        <!--        groups="medical_base.group_medical_root_menu"-->
+        <!--        web_icon="medical_base,static/description/icon.png"-->

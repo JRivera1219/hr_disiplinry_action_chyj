@@ -51,7 +51,7 @@
                                                                     type="action">
                                                                 <field name="expedient_count"/>
                                                                 Expedients
-                                                                <span>📁📓📝</span>
+                                                                <span>📁📁📁</span>
 
                                                             </button>
                                                         </div>
@@ -94,20 +94,21 @@
             <field name="model">type.expedint</field>
             <field name="arch" type="xml">
                 <tree string="Type Expedient" create="1">
-                    <field name="name"/>
-                    <field name="description"/>
-                    <field name="active"/>
-                    <field name="image"/>
-                    <field name="state"/>
-                    <field name="color"/>
-                    <field name="expedient_count"/>
+                    <field name="name" attrs="{'invisible':[('active','!=',True)]}"/>
+                    <field name="description" attrs="{'invisible':[('active','!=',True)]}"/>
+                    <!--este es el show = True-->
+                    <field name="active" string="Activo"/>
+                    <field name="image" attrs="{'invisible':[('active','!=',True)]}"/>
+                    <field name="state" attrs="{'invisible':[('active','!=',True)]}"/>
+                    <field name="color" attrs="{'invisible':[('active','!=',True)]}"/>
+                    <field name="expedient_count" attrs="{'invisible':[('active','!=',True)]}"/>
                 </tree>
             </field>
         </record>
 
         <!-- type related expedient menu action -->
         <record model="ir.actions.act_window" id="action_type_expedient">
-            <field name="name">Expedientes 📚</field>
+            <field name="name">Expedientes 📁</field>
             <field name="res_model">type.expedint</field>
             <field name="view_mode">kanban,form,tree</field>
             <field name="view_id" ref="view_hr_type_expedient_kanban"/>
@@ -121,11 +122,11 @@
                 </p>
             </field>
         </record>
-        <menuitem name="Tipo de Expediente" parent="menu_crm_case_expedeint" id="menu_type_expedinet"
+        <menuitem name="Expedientes" parent="menu_crm_case_expedeint" id="menu_type_expedinet"
                   action="action_type_expedient" sequence="1"/>
-
-        <menuitem parent="menu_hr_expedient_configuration" id="menu_hr_type_expedient_config"
+        <!--  el Tercer menu  al ultimo-->
+        <!--menuitem parent="menu_hr_expedient_configuration" id="menu_hr_type_expedient_config"
                   action="action_type_expedient"
-                  sequence="10"/>
+                  sequence="10"/-->
     </data>
 </odoo>

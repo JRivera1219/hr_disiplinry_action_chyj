@@ -10,14 +10,14 @@ class ExpedientStage(models.Model):
     _description = "Expedient Stage"
     _order = 'sequence,id'
 
-    name = fields.Char("Stage Name", required=True, translate=True)
+    name = fields.Char("Nombre Del Etapa", required=True, translate=True)
     sequence = fields.Integer("Sequence", default=10, help='Gives the sequence order when displaying a list of stages.')
     #detalle
-    expedient_ids = fields.Many2many('type.expedint', string="Expedient Specific",
+    expedient_ids = fields.Many2many('type.expedint', string="Especificar Expediente",
                                      help='Specific jobs that uses this stage. Other jobs will not use this stage.')
     requirements = fields.Text("Requirements")
     fold = fields.Boolean(
-        "Folded in Kanban",
+        "Doblado en Kanban",
         help="This stage is folded in the kanban view when there are no records in that stage to display.")
     legend_blocked = fields.Char(
         'Red Kanban Label', default=lambda self: _('Blocked'), translate=True, required=True)
@@ -48,18 +48,19 @@ class TypeExpedient(models.Model):
             rec.expedient_count = cantitad_expedientes
 
     # proceso  para la secuencia de  folio 01-09-2022
-    name = fields.Char('Expedient Type', required=True)
+    name = fields.Char('Tipo de Expediente', required=True)
     # res=fields.Many2one('hr.employee',string="Responsable")
-    description = fields.Char('Description')
-    active = fields.Boolean('Active', default=True, store=True, readonly=False)
-    image = fields.Binary(string='Image')
+    description = fields.Char('Descripción')
+    #este  show de active para mostrar  y ocultar
+    active = fields.Boolean('Activo', default=False)
+    image = fields.Binary(string='Imagen')
     state = fields.Selection([
         ('progress', 'Expedient in Progress'),
         ('open', 'Expedient Open')
-    ], string='Status', readonly=True, required=True, tracking=True, copy=False, default='progress',
+    ], string='Estatus', readonly=True, required=True, tracking=True, copy=False, default='progress',
         help="Set whether the investigation process is open or closed for this expedient.")
     color = fields.Integer()
-    expedient_count = fields.Integer(compute='_compute_expedient_count', string="Expedient Count")
+    expedient_count = fields.Integer(compute='_compute_expedient_count', string="Cantidad De Expedientes")
 
     def close_dialog(self):
         return {'type': 'ir.actions.act_window_close'}
@@ -107,6 +108,7 @@ class Expedient(models.Model):
     sequence_type = fields.Selection(string='seque',
                                      selection=[('RM/2022/', 'REMOCION'), ('SC/2022/', 'SEPARACON DE CARGO'),
                                                 ('AMP/2022/', 'AMPARO')])
+    ##Empieza para la tabla de excel
     name = fields.Char("N° EXPEDIENTE") or 'New'
     # name = fields.Char("Subject / Expedient Name", required=True) or 'New'
     # name = fields.Char(string="Task No", readonly=True, required=True, copy=False, default='New')

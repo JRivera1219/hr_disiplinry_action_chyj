@@ -28,6 +28,21 @@
                     <field name="last_stage_id" invisible="1"/>
                     <field name="date_last_stage_update" invisible="1"/>
                     <field name="name"/>
+                    <!---new 20/10/22-->
+                    <field name="date_open"/>
+                    <field name="genero"/>
+                    <field name="inv"/>
+                    <field name="file_origin"/>
+                    <field name="signing_person"/>
+                    <field name="sender_dependency"/>
+                    <field name="date"/>
+                    <field name="date1"/>
+                    <field name="adqui"/>
+                    <field name="adqui1"/>
+                    <field name="conducta"/>
+                    <field name="motdcierre"/>
+                    <field name="Finalizacion"/>
+                    <!--new 20/10/22-->
                     <field name="type_expedient_id"/>
                     <field name="stage_id"/>
                     <field name="source_id"/>
@@ -165,8 +180,8 @@
                                 </tree>
                             </page>
                         </notebook>
-                        <separator string="Application Summary"/>
-                        <field name="description" placeholder="Feedback of actions..."/>
+                        <separator string="Notas"/>
+                        <field name="description" placeholder="Escribir Cualquier Nota..."/>
                     </sheet>
                     <div class="oe_chatter">
                         <field name="message_follower_ids" widget="mail_followers"/>
@@ -514,8 +529,10 @@
             <field name="arch" type="xml">
                 <form string="Create a type Expedient">
                     <sheet>
+                           <img src="/hr_disiplinry_action_chyj/static/description/3.png"/>
                         <group>
-                            <field name="name" class="oe_inline" placeholder="e.g. administrative act"/>
+                            <field name="name" class="oe_inline" placeholder="Nombre del Expediente"/>
+                            <field name="active"/>
                             <!--field name="sequence3"></field-->
                             <!--field name="sequence_typ"></field-->
                             <!--field name="res"></field-->
@@ -532,8 +549,9 @@
                             <!--                        </div>-->
                         </group>
                         <footer>
-                            <button string="Create" name="close_dialog" type="object" class="btn-primary"/>
-                            <button string="Discard" class="btn-secondary" special="cancel"/>
+                            <!--button string="Create"  class="oe_highlight" name="send_request_libre_dte" icon='fa-cloud-upload' style="margin-top:5px"/>
+                            <button string="Discard" class="btn-secondary" special="cancel"/-->
+
                         </footer>
                     </sheet>
                 </form>
@@ -555,7 +573,7 @@
                 sequence="1"/>
     </data>
 
-    <menuitem id="menu_hr_expedient_configuration" name="Configuration" parent="menu_hr_expedient_root"
+    <menuitem id="menu_hr_expedient_configuration" name="Configuracion" parent="menu_hr_expedient_root"
               sequence="100"/>
 
 
@@ -619,7 +637,8 @@
         <field name="arch" type="xml">
             <form string="Stage">
                 <sheet>
-                    <group name="stage_definition" string="Stage Definition">
+                    <img src="/hr_disiplinry_action_chyj/static/description/eta.jpg"/>
+                    <group name="stage_definition" string="Etapas">
                         <group>
                             <field name="name"/>
                             <field name="sequence" groups="base.group_no_one"/>
@@ -630,10 +649,9 @@
                             <field name="expedient_ids" widget="many2many_tags"/>
                         </group>
                     </group>
-                    <group name="tooltips" string="Tooltips">
+                    <group name="tooltips" string="Información sobre herramientas">
                         <p class="text-muted" colspan="2">
-                            You can define here the labels that will be displayed for the kanban state instead
-                            of the default labels.
+                            Puede definir aquí las etiquetas que se mostrarán para el estado kanban en lugar de las etiquetas predeterminadas.
                         </p>
                         <label for="legend_normal" string=" " class="o_status"/>
                         <field name="legend_normal" nolabel="1"/>
@@ -642,7 +660,7 @@
                         <label for="legend_done" string=" " class="o_status o_status_green"/>
                         <field name="legend_done" nolabel="1"/>
                     </group>
-                    <separator string="Requirements"/>
+                    <separator string="Requerimientos"/>
                     <field name="requirements"/>
                 </sheet>
             </form>
@@ -651,7 +669,7 @@
 
     <!-- Stage Action -->
     <record id="hr_expedient_stage_act" model="ir.actions.act_window">
-        <field name="name">Stages</field>
+        <field name="name">Estatus</field>
         <field name="res_model">hr.expedient.stage</field>
         <field name="view_mode">tree,kanban,form</field>
         <field name="view_id" ref="hr_expedinet_stage_tree"/>
@@ -667,7 +685,7 @@
 
     <menuitem
             id="menu_hr_expedient_stage"
-            name="Etapas"
+            name="Etapas ▶ "
             parent="menu_hr_expedient_configuration"
             action="hr_expedient_stage_act"
             sequence="1"/>
@@ -707,7 +725,7 @@
     </record>
 
     <record id="type_exp_act_window" model="ir.actions.act_window">
-        <field name="name">Type Disiplinary expedient</field>
+        <field name="name">Tipo De Expediente 📁</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">type.expedint</field>
         <!--<field name="view_type">form</field>-->
@@ -720,7 +738,7 @@
     </record>
     <menuitem
             id="menu_type_expedient"
-            name="Type Expedient Disciplinary"
+            name="Tipo De Expediente📁"
             parent="menu_hr_expedient_configuration"
             action="type_exp_act_window"
             sequence="2"/>
